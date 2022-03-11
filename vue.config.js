@@ -46,7 +46,10 @@ module.exports = {
   // 3.配置方式三:
   chainWebpack: (config) => {
     // 设置 svg-sprite-loader
-    config.module.rule('svg').exclude.add(resolve('src/icons')).end()
+    config.module
+      .rule('svg')
+      .exclude.add(resolve('src/icons'))
+      .end()
     config.module
       .rule('icons')
       .test(/\.svg$/)

@@ -1,53 +1,85 @@
 <template>
-  <template v-if="isExternalRouter">
-    <MenuItemLink :route="route" />
-  </template>
-  <template v-if="!route.hidden">
-    <!-- 有多个children节点的时候 -->
-    <el-sub-menu v-if="isChildrenMenu" :index="route.path">
-      <template #title>
-        <MenuItem :title="route.meta.title" :icon="route.meta.icon" />
-      </template>
-      <!-- 递归渲染子菜单 -->
-      <SidebarItem v-for="item in route.children" :key="item.path" :route="item"></SidebarItem>
-    </el-sub-menu>
-    <!-- 没有children或是只有一个节点的时候 -->
-    <template v-else :index="route.children[0].path">
-      <MenuItem :title="route.children[0].meta.title" :icon="route.children[0].meta.icon"> </MenuItem>
+  <div v-if="!route.hidden">
+    <template v-if="hasOneShowingChild(route.children,route) && (!onlyOneChild.children||onlyOneChild.noShowingChildren)">
+      <MenuItemLink v-if="onlyOneChild.meta" :route="onlyOneChild" />
     </template>
-  </template>
+    <el-menu-item-group v-else :index="resolvePath(route.path)" popper-append-to-body>
+      <template #title>
+        <MenuItem v-if="route.meta" :icon="route.meta && route.meta.icon" :title="route.meta.title" />
+      </template>
+      <sidebar-item
+        v-for="child in route.children"
+        :key="child.path"
+        :is-nest="true"
+        :route="child"
+        :base-path="resolvePath(child.path)"
+        class="nest-menu"
+      />
+    </el-menu-item-group>
+  </div>
 </template>
 
-<script setup>
-import { defineProps, computed } from 'vue'
+<script>
+import path from 'path'
+import { computed, defineComponent } from 'vue'
 import MenuItem from './MenuItem'
 import MenuItemLink from './MenuItemLink'
-import { isExternal as external } from '@/common/utils'
-
-const props = defineProps({
-  route: {
-    // 当前路由（此时的父路由）
-    type: Object,
-    required: true
-  }
-})
-const isChildrenMenu = computed(() => {
-  console.log('-----------')
-  console.log(props.route) 
-  // return props.route.children && props.route.children.length 
-  if (props.route.children && props.route.children.length) {
-    if (props.route.children.length === 1) {
-      return false
-    } else {
-      return true
+import { isExternal } from '@/common/utils'
+export default defineComponent({
+  props: {
+    route: { // 当前路由（第一层的父路由）
+      type: Object,
+      required: true
+    },
+    basePath: {
+      type: String,
+      default: ''
     }
-  } else {
-    return false
+  },
+  components: {
+    MenuItem,
+    MenuItemLink
+  },
+  setup(props) {
+    var onlyOneChild = null
+    const hasOneShowingChild = (children = [], parent) => {
+      const showingChildren = children.filter(item => {
+        if (item.hidden) {
+          return false
+        } else {
+          // Temp set(will be used if only has one showing child)
+          onlyOneChild = item
+          return true
+        }
+      })
+      // When there is only one child router, the child router is displayed by default
+      if (showingChildren.length === 1) {
+        return true
+      }
+      // Show parent if there are no child router to display
+      if (showingChildren.length === 0) {
+        onlyOneChild = { ...parent, path: '', noShowingChildren: true }
+        return true
+      }
+      return false
+    }
+    const resolvePath = (routePath) => {
+      if (isExternal(routePath)) {
+        return routePath
+      }
+      if (isExternal(props.basePath)) {
+        return props.basePath
+      }
+      return path.resolve(props.basePath, routePath)
+    }
+    console.log('000000000000000000000')
+    console.log(hasOneShowingChild(props.route.children, props.route))
+    console.log(onlyOneChild)
+    return {
+      onlyOneChild,
+      hasOneShowingChild,
+      resolvePath
+    }
   }
-})
-
-// 是否为外部路由
-const isExternalRouter = computed(() => {
-  return external(props.route.path)
 })
 </script>

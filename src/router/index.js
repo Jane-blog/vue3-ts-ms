@@ -4,22 +4,11 @@ import Layout from '@/layout'
 
 export const routes = [
   {
-    path: '/',
-    redirect: '/home',
-    hidden: true
-  },
-  {
     path: '/login',
     name: 'Login',
     hidden: true,
     component: () => import('@/views/login/index.vue')
   },
-  // {
-  //   path: '/layout',
-  //   name: 'Layout',
-  //   component: Layout
-  // }
-
   {
     path: '/',
     component: Layout,
@@ -30,7 +19,7 @@ export const routes = [
         path: 'home',
         name: 'Home',
         component: () => import('@/views/home/index.vue'),
-        meta: { title: '首页', affix: true }
+        meta: { title: '首页', icon: 'dashboard', affix: true }
       }
     ]
   }

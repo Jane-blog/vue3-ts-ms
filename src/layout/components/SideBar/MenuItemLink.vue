@@ -1,21 +1,24 @@
 <template>
   <el-menu-item index="" @click="openLink">
-    <MenuItem :title="route.title" :icon="route.icon" />
+    <MenuItem :title="route.meta.title" :icon="route.meta.icon" />
   </el-menu-item>
 </template>
 
 <script setup>
 import { defineProps } from 'vue'
 import MenuItem from './MenuItem'
-
+import { isExternal } from '@/common/utils'
 const props = defineProps({
   route: {
-    // 当前路由（此时的父路由）
     type: Object,
     required: true
   }
 })
 const openLink = () => {
-  window.open(props.route.path, '_blank')
+  if (isExternal(props.route.path)) {
+    window.open(props.route.path, '_blank')
+  } else {
+
+  }
 }
 </script>

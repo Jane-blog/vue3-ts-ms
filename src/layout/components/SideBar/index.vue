@@ -2,8 +2,8 @@
     <div class="side-bar">
     <router-link to="/home">
       <div class="logo-container">
-        <el-avatar shape="square" :size="logoHeight"></el-avatar>
-        <h1 class="logo-title" v-if="$store.getters.sidebarOpened">vue template</h1>
+        <img src="@/assets/images/icon_logo.png" class="icon-logo" alt="">
+        <span class="logo-title" v-if="$store.getters.sidebarOpened">vue template</span>
       </div>
     </router-link>
     <el-scrollbar>
@@ -12,50 +12,70 @@
         class="sidebar-container-menu"
         mode="vertical"
         router
-        background-color="#545c64"
-        text-color="#fff"
-        active-text-color="#409EFF"
         :unique-opened="true"
-        :collapse="!$store.getters.sidebarOpened"
         :collapse-transition="true"
+        :collapse="!$store.getters.sidebarOpened"
+        :background-color="variables.menuBg"
+        :text-color="variables.menuText"
+        :active-text-color="variables.menuActiveText"
         :default-active="activeMenu"
       >
         <!-- 循环导航菜单 -->
-        <!-- <SidebarItem v-for="item in routes" :key="item.path" :route="item" /> -->
+        <SidebarItem v-for="item in routes" :key="item.path" :route="item" :base-path="item.path" />
       </el-menu>
     </el-scrollbar>
   </div>
 </template>
 
-<script setup>
-import { useRoute } from 'vue-router'
-import { computed } from 'vue'
-import { routes } from '@/router'
+<script>
+import { useRoute, useRouter } from 'vue-router'
+import { defineComponent, computed } from 'vue'
 import SidebarItem from './SidebarItem'
 import variables from '@/styles/variables.less'
-const logoHeight = 44
-// 计算高亮 menu 的方法
-const route = useRoute()
-console.log('---route---')
-console.log(routes)
-const activeMenu = computed(() => {
-  const { path } = route
-  return path
+export default defineComponent({
+  components: {
+    SidebarItem
+  },
+  setup() {
+    const logoHeight = 44
+    // 计算高亮 menu 的方法
+    const route = useRoute()
+    const router = useRouter()
+    const routes = computed(() => {
+      console.log('---routes---')
+      console.log(router.options.routes)
+      return router.options.routes
+    })
+    const activeMenu = computed(() => {
+      console.log('---activeMenu---')
+      console.log(router.currentRoute.value.path)
+      return router.currentRoute.value.path
+    })
+    return {
+      variables,
+      routes,
+      activeMenu
+    }
+  }
 })
 </script>
 
 <style lang="less" scoped>
 .logo-container {
   height: v-bind(logoHeight) + 'px';
-  padding: 10px 0 22px 0;
+  // padding: 10px 0 22px 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  .icon-logo {
+    width: 24px;
+    height: 24px;
+  }
   .logo-title {
     margin-left: 10px;
     color: #fff;
     font-weight: 600;
-    line-height: 50px;
+    line-height: 44px;
     font-size: 16px;
     white-space: nowrap;
   }
