@@ -1,31 +1,48 @@
 <template>
   <div v-if="!route.hidden">
-    <template v-if="hasOneShowingChild(route.children,route) && (!onlyOneChild.children||onlyOneChild.noShowingChildren)">
-      <MenuItemLink v-if="onlyOneChild.meta" :route="onlyOneChild" />
-    </template>
-    <el-menu-item-group v-else :index="resolvePath(route.path)" popper-append-to-body>
-      <template #title>
-        <MenuItem v-if="route.meta" :icon="route.meta && route.meta.icon" :title="route.meta.title" />
+    <!-- 只有一个子菜单集合 || || 递归后没有子菜单  -->
+    <template v-if="(route.children && route.children.length == 1) || !route.children">
+      <template v-if="(route.children && route.children.length == 1)" >
+        <el-menu-item :index="resolvePath(route.path)">
+          <template #title>
+            <MenuItem :icon="route.children[0].meta.icon" :title="route.children[0].meta.title" />
+          </template>
+        </el-menu-item>
       </template>
-      <sidebar-item
-        v-for="child in route.children"
-        :key="child.path"
-        :is-nest="true"
-        :route="child"
-        :base-path="resolvePath(child.path)"
-        class="nest-menu"
-      />
-    </el-menu-item-group>
+      <template v-if="!route.children">
+        <el-menu-item :index="resolvePath(route.path)">
+          <template #title>
+            <MenuItem :icon="route.meta.icon" :title="route.meta.title" />
+          </template>
+        </el-menu-item>
+      </template>
+    </template>
+    <template v-else>
+      <el-sub-menu :index="resolvePath(route.path)">
+        <template #title>
+          <MenuItem :icon="route.meta.icon" :title="route.meta.title" />
+        </template>
+        <SidebarItem
+          v-for="child in route.children"
+          :key="child.path"
+          :is-nest="true"
+          :route="child"
+          :base-path="resolvePath(child.path)"
+          class="nest-menu"
+        />
+      </el-sub-menu>
+    </template>
   </div>
 </template>
 
 <script>
 import path from 'path'
-import { computed, defineComponent } from 'vue'
+import { defineComponent } from 'vue'
 import MenuItem from './MenuItem'
 import MenuItemLink from './MenuItemLink'
 import { isExternal } from '@/common/utils'
 export default defineComponent({
+  name: 'SidebarItem',
   props: {
     route: { // 当前路由（第一层的父路由）
       type: Object,
@@ -41,28 +58,6 @@ export default defineComponent({
     MenuItemLink
   },
   setup(props) {
-    var onlyOneChild = null
-    const hasOneShowingChild = (children = [], parent) => {
-      const showingChildren = children.filter(item => {
-        if (item.hidden) {
-          return false
-        } else {
-          // Temp set(will be used if only has one showing child)
-          onlyOneChild = item
-          return true
-        }
-      })
-      // When there is only one child router, the child router is displayed by default
-      if (showingChildren.length === 1) {
-        return true
-      }
-      // Show parent if there are no child router to display
-      if (showingChildren.length === 0) {
-        onlyOneChild = { ...parent, path: '', noShowingChildren: true }
-        return true
-      }
-      return false
-    }
     const resolvePath = (routePath) => {
       if (isExternal(routePath)) {
         return routePath
@@ -70,14 +65,10 @@ export default defineComponent({
       if (isExternal(props.basePath)) {
         return props.basePath
       }
+      console.log('------------', props.basePath)
       return path.resolve(props.basePath, routePath)
     }
-    console.log('000000000000000000000')
-    console.log(hasOneShowingChild(props.route.children, props.route))
-    console.log(onlyOneChild)
     return {
-      onlyOneChild,
-      hasOneShowingChild,
       resolvePath
     }
   }

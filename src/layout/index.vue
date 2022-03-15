@@ -5,6 +5,7 @@
     <div class="main-container">
       <div :class="{'fixed-header':true}">
         <NavBar />
+        <TagsView />
       </div>
     </div>
   </div>
@@ -50,10 +51,10 @@ import AppMain from './components/AppMain'
   width: calc(100% - @hideSideBarWidth);
 }
 .main-container {
-    min-height: 100%;
-    transition: margin-left .28s;
-    margin-left: @sideBarWidth;
-    position: relative;
-    background-color: antiquewhite;
-  }
+  min-height: 100%;
+  transition: margin-left .28s;
+  margin-left: @sideBarWidth;
+  position: relative;
+  // background-color: antiquewhite;
+}
 </style>

@@ -1,6 +1,7 @@
 const getters = {
   sidebarOpened: (state) => state.app.sidebarOpened,
-  tagsViewList: (state) => state.app.tagsViewList
+  visitedViews: state => state.tagsView.visitedViews,
+  cachedViews: state => state.tagsView.cachedViews
 }
 
 export default getters

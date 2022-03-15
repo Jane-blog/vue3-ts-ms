@@ -22,6 +22,27 @@ export const routes = [
         meta: { title: '首页', icon: 'dashboard', affix: true }
       }
     ]
+  },
+  {
+    path: '/element',
+    component: Layout,
+    redirect: 'noredirect',
+    meta: { title: 'Element', icon: 'table' },
+    hidden: false,
+    children: [
+      {
+        path: 'table',
+        name: 'Table',
+        component: () => import('@/views/element/table/index.vue'),
+        meta: { title: '表格', icon: 'table' }
+      },
+      {
+        path: 'from',
+        name: 'From',
+        component: () => import('@/views/element/from/index.vue'),
+        meta: { title: '表单', icon: 'from' }
+      }
+    ]
   }
 ]
 
@@ -37,12 +58,16 @@ const whiteList = ['/login']
 router.beforeEach(async(from, to, next) => {
   const token = getCache('username')
   if (to.path === '/login') {
-    next()
+    next('/')
   } else {
     if (token) { // 存在token, 进入主页,不存在就到登录页面
-      next({ path: '/login' })
-    } else {
       next()
+    } else {
+      try {
+        next()
+      } catch (error) {
+        next(`/login?redirect=${to.path}`)
+      }
     }
   }
 })
