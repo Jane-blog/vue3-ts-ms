@@ -1,13 +1,13 @@
 export default {
   namespaced: true,
   state: () => ({
-    sidebarOpened: true, // 左侧伸缩开关
+    sidebarOpened: true, // 左侧伸缩开关,默认打开
     tagsViewList: []
   }),
   // 同步的方法
   mutations: {
-    // 切换是否隐藏
-    triggerSidebarOpened(state) {
+    // 左侧伸缩开关,切换是否隐藏
+    TOGGLE_SIDEBAR(state) {
       state.sidebarOpened = !state.sidebarOpened
     },
     // 添加tags
@@ -34,5 +34,9 @@ export default {
     }
   },
   // 异步的方法
-  actions: {}
+  actions: {
+    toggleSideBar({ commit }) {
+      commit('TOGGLE_SIDEBAR')
+    }
+  }
 }

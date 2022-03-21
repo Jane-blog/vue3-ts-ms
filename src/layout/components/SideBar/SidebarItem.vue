@@ -1,37 +1,25 @@
 <template>
   <div v-if="!route.hidden">
-    <!-- 只有一个子菜单集合 || || 递归后没有子菜单  -->
-    <template v-if="(route.children && route.children.length == 1) || !route.children">
-      <template v-if="(route.children && route.children.length == 1)" >
-        <el-menu-item :index="resolvePath(route.path)">
-          <template #title>
-            <MenuItem :icon="route.children[0].meta.icon" :title="route.children[0].meta.title" />
-          </template>
+    <template v-if="hasOneShowingChild(route.children,route) && (!onlyOneChild.children||onlyOneChild.noShowingChildren)">
+      <MenuItemLink v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path)">
+        <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="[{'submenu-title-noDropdown':!isNest}, {'menu-tag': !onlyOneChild.meta.icon}]">
+          <MenuItem :icon="onlyOneChild.meta.icon||(route.meta&&route.meta.icon)" :title="onlyOneChild.meta.title"/>
         </el-menu-item>
-      </template>
-      <template v-if="!route.children">
-        <el-menu-item :index="resolvePath(route.path)">
-          <template #title>
-            <MenuItem :icon="route.meta.icon" :title="route.meta.title" />
-          </template>
-        </el-menu-item>
-      </template>
+      </MenuItemLink>
     </template>
-    <template v-else>
-      <el-sub-menu :index="resolvePath(route.path)">
-        <template #title>
-          <MenuItem :icon="route.meta.icon" :title="route.meta.title" />
-        </template>
-        <SidebarItem
-          v-for="child in route.children"
-          :key="child.path"
-          :is-nest="true"
-          :route="child"
-          :base-path="resolvePath(child.path)"
-          class="nest-menu"
-        />
-      </el-sub-menu>
-    </template>
+    <el-sub-menu v-else ref="subMenu" :index="resolvePath(route.path)" popper-append-to-body>
+      <template #title>
+        <MenuItem v-if="route.meta" :icon="route.meta && route.meta.icon" :title="route.meta.title"/>
+      </template>
+      <SidebarItem
+        v-for="child in route.children"
+        :key="child.path"
+        :is-nest="true"
+        :route="child"
+        :base-path="resolvePath(child.path)"
+        class="nest-menu"
+      />
+    </el-sub-menu>
   </div>
 </template>
 
@@ -51,25 +39,52 @@ export default defineComponent({
     basePath: {
       type: String,
       default: ''
+    },
+    isNest: {
+      type: Boolean,
+      default: false
     }
   },
   components: {
     MenuItem,
     MenuItemLink
   },
-  setup(props) {
-    const resolvePath = (routePath) => {
+  data() {
+    // To fix https://github.com/PanJiaChen/vue-admin-template/issues/237
+    // TODO: refactor with render function
+    this.onlyOneChild = null
+    return {}
+  },
+  methods: {
+    hasOneShowingChild(children = [], parent) {
+      const showingChildren = children.filter(item => {
+        if (item.hidden) {
+          return false
+        } else {
+          // Temp set(will be used if only has one showing child)
+          this.onlyOneChild = item
+          return true
+        }
+      })
+      // When there is only one child router, the child router is displayed by default
+      if (showingChildren.length === 1) {
+        return true
+      }
+      // Show parent if there are no child router to display
+      if (showingChildren.length === 0) {
+        this.onlyOneChild = { ...parent, path: '', noShowingChildren: true }
+        return true
+      }
+      return false
+    },
+    resolvePath(routePath) {
       if (isExternal(routePath)) {
         return routePath
       }
-      if (isExternal(props.basePath)) {
-        return props.basePath
+      if (isExternal(this.basePath)) {
+        return this.basePath
       }
-      console.log('------------', props.basePath)
-      return path.resolve(props.basePath, routePath)
-    }
-    return {
-      resolvePath
+      return path.resolve(this.basePath, routePath)
     }
   }
 })

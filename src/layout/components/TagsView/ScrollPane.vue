@@ -18,10 +18,19 @@ export default defineComponent({
   },
   computed: {
     scrollWrapper() {
-      return this.$refs.scrollContainer.$refs.wrap
+      return this.$refs.scrollContainer.$el
     }
   },
+  // mounted() {
+  //   this.scrollWrapper.addEventListener('scroll', this.emitScroll, true)
+  // },
+  // beforeUnmount() {
+  //   this.scrollWrapper.removeEventListener('scroll', this.emitScroll)
+  // },
   methods: {
+    // emitScroll() {
+    //   this.$emit('scroll')
+    // },
     handleScroll(e) {
       const eventDelta = e.wheelDelta || -e.deltaY * 40
       const $scrollWrapper = this.scrollWrapper

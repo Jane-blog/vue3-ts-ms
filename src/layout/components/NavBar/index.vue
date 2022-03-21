@@ -1,14 +1,14 @@
 <template>
   <div class="nav-bar">
     <!-- 导航搜索控制开关 -->
-    <el-icon size="1.5em" style="margin:0 15px;" v-if="isFold" @click="handleFoldClick">
-      <Fold v-if="isFold" />
-      <Expand v-if="!isFold" />
+    <el-icon size="1.2em" class="fold-expand-icon" @click="handleFoldClick">
+      <Fold v-if="isActive" />
+      <Expand v-else />
     </el-icon>
     <!-- 面包屑导航 -->
     <Breadcrumb class="nav-breadcrumb"/>
     <!-- 下拉菜单 -->
-    <div class="nav-righr-menu">
+    <div class="nav-right-menu">
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <img src="@/assets/images/admin_avator.png" class="user-avatar">
@@ -32,21 +32,24 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue'
-import { Expand, Fold } from '@element-plus/icons'
+import { defineComponent, computed } from 'vue'
+import { Fold, Expand } from '@element-plus/icons'
 import Breadcrumb from '@/components/common/Breadcrumb'
 import { useRoute, useRouter } from 'vue-router'
+import store from '@/store'
 import { deleteCache } from '@/common/utils'
 export default defineComponent({
   components: {
-    Expand,
     Fold,
+    Expand,
     Breadcrumb
   },
   setup() {
     const route = useRoute()
     const router = useRouter()
-    const isFold = true
+    const isActive = computed(() => {
+      return store.state.app.sidebarOpened
+    })
     const logout = () => {
       deleteCache('username')
       router.push(`/login?redirect=${route.fullPath}`).catch(err => {
@@ -54,10 +57,10 @@ export default defineComponent({
       })
     }
     const handleFoldClick = () => {
-
+      store.dispatch('app/toggleSideBar')
     }
     return {
-      isFold,
+      isActive,
       handleFoldClick,
       logout
     }
@@ -74,7 +77,14 @@ export default defineComponent({
   position: relative;
   background: #fff;
   box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
-  .nav-righr-menu {
+
+  .fold-expand-icon {
+    margin: 0 15px;
+    &:hover {
+      background: #DDDDDD;
+    }
+  }
+  .nav-right-menu {
     position: absolute;
     right: 15px;
     line-height: 50px;

@@ -34,13 +34,13 @@ export const routes = [
         path: 'table',
         name: 'Table',
         component: () => import('@/views/element/table/index.vue'),
-        meta: { title: '表格', icon: 'table' }
+        meta: { title: '表格', icon: 'article-create' }
       },
       {
         path: 'from',
         name: 'From',
         component: () => import('@/views/element/from/index.vue'),
-        meta: { title: '表单', icon: 'from' }
+        meta: { title: '表单', icon: 'article' }
       }
     ]
   }

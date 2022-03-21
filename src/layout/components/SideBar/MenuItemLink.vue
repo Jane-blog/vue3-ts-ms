@@ -1,24 +1,43 @@
 <template>
-  <el-menu-item index="" @click="openLink">
-    <MenuItem :title="route.meta.title" :icon="route.meta.icon" />
-  </el-menu-item>
+  <component :is="type" v-bind="linkProps(to)">
+    <slot />
+  </component>
 </template>
 
-<script setup>
-import { defineProps } from 'vue'
-import MenuItem from './MenuItem'
+<script>
+import { defineComponent } from 'vue'
 import { isExternal } from '@/common/utils'
-const props = defineProps({
-  route: {
-    type: Object,
-    required: true
+export default defineComponent({
+  props: {
+    to: {
+      type: String,
+      required: true
+    }
+  },
+  computed: {
+    isExternal() {
+      return isExternal(this.to)
+    },
+    type() {
+      if (this.isExternal) {
+        return 'a'
+      }
+      return 'router-link'
+    }
+  },
+  methods: {
+    linkProps(to) {
+      if (this.isExternal) {
+        return {
+          href: to,
+          target: '_blank',
+          rel: 'noopener'
+        }
+      }
+      return {
+        to: to
+      }
+    }
   }
 })
-const openLink = () => {
-  if (isExternal(props.route.path)) {
-    window.open(props.route.path, '_blank')
-  } else {
-
-  }
-}
 </script>

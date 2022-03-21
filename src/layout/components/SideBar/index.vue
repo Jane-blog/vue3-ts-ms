@@ -6,7 +6,7 @@
         <span class="logo-title" v-if="$store.getters.sidebarOpened">vue template</span>
       </div>
     </router-link>
-    <el-scrollbar>
+    <el-scrollbar wrap-class="scrollbar-wrapper">
       <!-- 一级 menu 菜单 -->
       <el-menu
         class="sidebar-container-menu"
@@ -37,7 +37,6 @@ export default defineComponent({
     SidebarItem
   },
   setup() {
-    const logoHeight = 44
     // 计算高亮 menu 的方法
     const route = useRoute()
     const router = useRouter()
@@ -59,25 +58,3 @@ export default defineComponent({
   }
 })
 </script>
-
-<style lang="less" scoped>
-.logo-container {
-  height: v-bind(logoHeight) + 'px';
-  // padding: 10px 0 22px 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  .icon-logo {
-    width: 24px;
-    height: 24px;
-  }
-  .logo-title {
-    margin-left: 10px;
-    color: #fff;
-    font-weight: 600;
-    line-height: 44px;
-    font-size: 16px;
-    white-space: nowrap;
-  }
-}
-</style>

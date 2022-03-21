@@ -68,7 +68,6 @@ export default defineComponent({
     onBeforeMount(() => {
       state.getBreadcrumb()
     })
-
     return {
       ...toRefs(state)
     }

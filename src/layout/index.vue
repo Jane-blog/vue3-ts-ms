@@ -7,6 +7,7 @@
         <NavBar />
         <TagsView />
       </div>
+      <AppMain />
     </div>
   </div>
 </template>
@@ -22,23 +23,12 @@ import AppMain from './components/AppMain'
 @import '~@/styles/base.less';
 @import '~@/styles/variables.less';
 .app-wrapper {
-  @include clearfix;
+  .clearfix();
   position: relative;
   height: 100%;
   width: 100%;
 }
-.sidebar-container {
-  transition: width @sideBarDuration;
-  width: @sideBarWidth !important;
-  background-color: @menuBg;
-  height: 100%;
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 1001;
-  overflow: hidden;
-}
+
 .fixed-header {
   position: fixed;
   top: 0;
