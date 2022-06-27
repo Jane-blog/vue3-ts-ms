@@ -91,4 +91,3 @@ export default function registerElement(app: App): void {
     app.component(cpn.name, cpn)
   }
 }
-
