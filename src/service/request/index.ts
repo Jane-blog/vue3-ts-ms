@@ -1,5 +1,6 @@
 import axios from 'axios'
-import type { AxiosRequestConfig, AxiosInstance, AxiosResponse } from 'axios'
+// import type { AxiosRequestConfig, AxiosInstance, AxiosResponse } from 'axios'
+import type { AxiosRequestConfig, AxiosInstance } from 'axios'
 import { ElNotification } from 'element-plus'
 
 // 配置信息
