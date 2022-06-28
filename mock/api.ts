@@ -32,7 +32,7 @@ const api = [
     type: 'get',
     response: (config) => {
       const { username } = paramObj(config.url)
-      const token = tokens[username]
+      const token = tokens[username].token
       if (token) {
         return {
           code: 0,

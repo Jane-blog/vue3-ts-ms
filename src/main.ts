@@ -3,12 +3,19 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
+// 全局样式
+import './assets/css/index.css'
+import 'normalize.css'
+
 /**element-plus指定组件引入**/
 // import { registerElement } from './global'
 
 /**element-plus全局引入**/
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
+
+// 路由权限拦截
+import './permission'
 
 /**
  * 测试环境下 引入自定义的mockRequest

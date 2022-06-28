@@ -15,17 +15,17 @@ export default defineComponent({
     HelloWorld
   },
   beforeCreate() {
-    console.log('----beforeCreate----')
+    console.log('----beforeCreate----home')
   },
   created() {
-    console.log('----created----')
+    console.log('----created----home')
     const parma = { username: 'admin', passwors: 123456 }
     userLogin(parma).then((res: any) => {
       console.log('----userLogin', res)
     })
   },
   setup() {
-    console.log('----setup----')
+    console.log('----setup----home')
   }
 })
 </script>

@@ -1,6 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
-import { getToken } from '@/utils/auth'
 import Home from '@/views/Home.vue'
 
 const routes: RouteRecordRaw[] = [
@@ -10,8 +9,8 @@ const routes: RouteRecordRaw[] = [
     component: Home
   },
   {
-    path: '/',
-    name: 'login',
+    path: '/login',
+    name: 'Login',
     component: () => import('@/views/login/index.vue')
   },
   {
@@ -28,16 +27,6 @@ const routes: RouteRecordRaw[] = [
 const router = createRouter({
   history: createWebHashHistory(),
   routes
-})
-
-router.beforeEach((to) => {
-  if (to.path !== '/login') {
-    const token = getToken()
-    if (!token) {
-      return '/login'
-    }
-    return '/home'
-  }
 })
 
 export default router

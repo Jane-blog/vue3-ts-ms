@@ -4,7 +4,6 @@
       <router-view></router-view>
     </el-config-provider>
   </div>
-  <router-view />
 </template>
 
 <script lang="ts">
