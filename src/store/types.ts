@@ -5,6 +5,8 @@ export interface IRootState {
 
 export interface IRootAndUser {
   user: UserState
+  app: any
+  tags: any
 }
 
 export type IStore = IRootState & IRootAndUser

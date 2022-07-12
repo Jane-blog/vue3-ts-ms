@@ -2,8 +2,8 @@ import router from '@/router'
 import type { Module } from 'vuex'
 import type { UserState } from './types'
 import type { IRootState } from '../types'
-import { userLogin } from '@/service/api/user'
-import { setToken } from '@/utils/auth'
+import { userLogin, userLogout } from '@/service/api/user'
+import { setToken, removeToken } from '@/utils/auth'
 
 const user: Module<UserState, IRootState> = {
   namespaced: true,
@@ -12,7 +12,6 @@ const user: Module<UserState, IRootState> = {
       token: ''
     }
   },
-  getters: {},
   mutations: {
     saveToken(state: any, token: string) {
       state.token = token
@@ -20,8 +19,7 @@ const user: Module<UserState, IRootState> = {
   },
   actions: {
     userLoginAction(
-      // eslint-disable-next-line @typescript-eslint/ban-types
-      { commit }: { commit: Function },
+      { commit },
       account: { username: string; password: string }
     ) {
       // 用户登录
@@ -38,8 +36,28 @@ const user: Module<UserState, IRootState> = {
             reject(error)
           })
       })
+    },
+    userLogoutAction({ commit }) {
+      return new Promise<void>((resolve, reject) => {
+        userLogout()
+          .then(() => {
+            logOut(commit)
+            resolve()
+          })
+          .catch((error) => {
+            logOut(commit)
+            reject(error)
+          })
+      })
+      commit('saveToken', '')
+      removeToken()
     }
   }
+}
+
+export const logOut = (commit) => {
+  commit('saveToken', '')
+  removeToken()
 }
 
 export default user

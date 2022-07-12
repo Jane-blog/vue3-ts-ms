@@ -48,6 +48,18 @@ const api = [
         data: {}
       }
     }
+  },
+  // 登出接口
+  {
+    url: '/user/logout',
+    type: 'get',
+    response: () => {
+      return {
+        code: 0,
+        message: '退出成功，请重新登陆~',
+        data: {}
+      }
+    }
   }
 ]
 

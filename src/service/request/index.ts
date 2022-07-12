@@ -12,7 +12,6 @@ class HJRequest {
   private readonly timeout: number
   private readonly withCredentials: boolean
   constructor() {
-    console.log('--API_BASE_URL--', API_BASE_URL, typeof API_BASE_URL)
     // 获取当前环境的api地址
     this.baseURL = API_BASE_URL as string
     // 请求超时时间：10秒

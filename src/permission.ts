@@ -10,7 +10,8 @@ import 'nprogress/nprogress.css'
  * showSpinner 是否显示加载ico
  * trickleSpeed 自动递增间隔
  * minimum 初始化时的最小百分比
- * */
+ *
+ */
 NProgress.configure({
   easing: 'ease',
   speed: 1000,
@@ -19,23 +20,29 @@ NProgress.configure({
 })
 import { getToken } from '@/utils/auth'
 
+// 白名单
+const whiteList = ['/login', '/404']
+
 /**
  * to 要去的路由
  * from 当前路由
  * next() 进入到要去的路由
  */
-
 router.beforeEach(async (to: any, from: any, next: any) => {
   NProgress.start()
   const hasToken: string | null | undefined = getToken()
-  if (to.path === '/login') {
-    if (!hasToken) {
-      next({ path: '/login' })
+  if (hasToken) {
+    if (to.path === '/login') {
+      next({ path: '/' })
     } else {
       next()
     }
   } else {
-    next()
+    if (whiteList.indexOf(to.path) !== -1) {
+      next()
+    } else {
+      next(`/login`)
+    }
   }
 })
 

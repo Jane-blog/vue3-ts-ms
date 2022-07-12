@@ -7,3 +7,10 @@ export function userLogin(data: any) {
     params: data
   })
 }
+
+export function userLogout() {
+  return axios.request({
+    url: '/user/logout',
+    method: 'get'
+  })
+}

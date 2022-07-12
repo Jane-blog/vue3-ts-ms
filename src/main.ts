@@ -4,18 +4,22 @@ import router from './router'
 import store from './store'
 
 // 全局样式
-import './assets/css/index.css'
+import './assets/css/index.less'
 import 'normalize.css'
 
-/**element-plus指定组件引入**/
+/** element-plus指定组件引入**/
 // import { registerElement } from './global'
 
-/**element-plus全局引入**/
+/** element-plus全局引入**/
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 
 // 路由权限拦截
 import './permission'
+
+// 自动导入svg文件
+import '@/icons'
+import SvgIcon from '@/components/svgIcon/index.vue'
 
 /**
  * 测试环境下 引入自定义的mockRequest
@@ -28,9 +32,10 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 const app = createApp(App)
-
 app.use(store)
 app.use(router)
+// 将SvgIcon.vue组件注册为全局组件
+app.component('SvgIcon', SvgIcon)
 
 // 注册插件
 app.use(ElementPlus)

@@ -42,12 +42,9 @@
 import { reactive } from 'vue'
 import { toRaw } from '@vue/reactivity'
 import { useStore } from '@/store/index'
-interface Account {
-  username: string
-  password: string
-}
+import type { Account } from './types'
 const store = useStore()
-const accountFrom = reactive<Account>({ username: '', password: '' })
+const accountFrom = reactive<Account>({ username: 'admin', password: '123456' })
 // 登陆
 const loginAction = () => {
   // console.log('登陆', toRaw(accountFrom))
@@ -66,7 +63,7 @@ const loginAction = () => {
   align-items: center;
   width: 100%;
   height: 100%;
-  background-image: url('../../assets/images/icon_login_bg.svg');
+  background-image: url('../../assets/images/icon_login_bg.jpg');
   background-size: cover;
   background-position: 0 0;
   background-repeat: no-repeat;

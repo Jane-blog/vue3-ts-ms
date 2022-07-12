@@ -1,6 +1,6 @@
 import { App } from 'vue'
 
-/**element-plus指定组件引入**/
+/** element-plus指定组件引入**/
 import {
   ElButton,
   ElTabs,

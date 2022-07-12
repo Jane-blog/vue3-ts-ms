@@ -1,14 +1,6 @@
 import Mock from 'mockjs'
+import { MockParams } from './types'
 import api from './api'
-
-// 定义参数类型
-interface MockParams {
-  url: string
-  type: string
-  data?: any
-  params?: any
-  response(option?: any): Record<string, unknown>
-}
 
 // 需要遍历的请求
 const mocks = [...api]

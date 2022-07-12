@@ -12,7 +12,7 @@ module.exports = {
   lintOnSave: process.env.NODE_ENV === 'development',
   productionSourceMap: false,
   devServer: {
-    port: port,
+    port,
     open: true,
     overlay: {
       warnings: false,
@@ -24,8 +24,23 @@ module.exports = {
     name: pageTitle,
     resolve: {
       alias: {
-        '@': resolve('src')
+        '@': resolve('src'),
+        '@components': resolve('src/components')
       }
     }
+  },
+  chainWebpack: (config) => {
+    config.module.rules.delete('svg') // 重点:删除默认配置中处理svg,
+    config.module
+      .rule('svg-sprite-loader')
+      .test(/\.svg$/)
+      .include.add(path.resolve(__dirname, './src/icons/svg')) // 需要处理svg的目录（可自定义）
+      .end()
+      .use('svg-sprite-loader')
+      .loader('svg-sprite-loader')
+      .options({
+        // 指定symbolId格式
+        symbolId: 'icon-[name]'
+      })
   }
 }
