@@ -28,7 +28,7 @@ const whiteList = ['/login', '/404']
  * from 当前路由
  * next() 进入到要去的路由
  */
-router.beforeEach(async (to: any, from: any, next: any) => {
+router.beforeEach(async(to: any, from: any, next: any) => {
   NProgress.start()
   const hasToken: string | null | undefined = getToken()
   if (hasToken) {

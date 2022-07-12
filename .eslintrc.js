@@ -26,9 +26,6 @@ module.exports = {
     '@vue/prettier/@typescript-eslint',
     'plugin:prettier/recommended'
   ],
-  plugins: [
-    // 插件，此插件用于识别文件中的js代码，没有MIME类型标识没有script标签也可以识别到，因此拿来识别.vue文件中的js代码
-  ],
   rules: {
     'no-console': 'off', // 是否禁止调用console对象的方法
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off', // 是否禁用 debugger
@@ -42,7 +39,6 @@ module.exports = {
     'no-cond-assign': ['error', 'always'], // 禁止条件表达式中出现赋值操作符
     'no-constant-condition': ['error', { checkLoops: true }], // 禁止在条件中使用常量表达式
     'no-control-regex': ['error'], // 禁止在正则表达式中使用控制字符
-    'no-debugger': ['error'], // 禁用 debugger
     'no-dupe-args': ['error'], // 禁止 function 定义中出现重名参数
     'no-dupe-keys': ['error'], // 禁止对象字面量中出现重复的 key
     'no-duplicate-case': ['error'], // 禁止出现重复的 case 标签
