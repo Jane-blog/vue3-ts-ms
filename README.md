@@ -1,13 +1,13 @@
 # vue3-ts-ms
-> 一个管理端模板解决方案，它是基于vue-cli、vue3(setup-script)、ts、element-plus，以composition api风格编写。
-
-> ms -> management system 管理系统
-
-> 开发中……
+> 一个管理端模板解决方案，基于vue-cli、vue3(setup-script)、ts、element-plus，以composition api风格编写。
 
 ## 简介
 
 项目的基础版本出自于源于花裤衩大佬的[vue-element-admin](https://github.com/PanJiaChen/vue-element-admin)。
+*ms -> management system 管理系统
+
+*开发中……
+
 ## 项目功能
 ```
 -- 登录 / 登出
