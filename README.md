@@ -4,7 +4,8 @@
 ## 简介
 
 项目的基础版本出自于源于花裤衩大佬的[vue-element-admin](https://github.com/PanJiaChen/vue-element-admin)。
-*ms -> management system 管理系统
+
+`ms` -> management system 管理系统
 
 *开发中……
 
