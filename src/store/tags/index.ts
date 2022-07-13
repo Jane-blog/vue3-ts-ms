@@ -2,8 +2,8 @@ const tags = {
   namespaced: true,
   state() {
     return {
-      visitedViews: [] as Array<any>,
-      cachedViews: [] as Array<any>
+      visitedViews: [],
+      cachedViews: []
     }
   },
   mutations: {
@@ -28,13 +28,25 @@ const tags = {
           )
         }
       }
-      // console.log('---tags visitedViews---', state.visitedViews)
+    },
+    deleteVisitedViews(state, view) {
+      for (const [i, v] of state.visitedViews.entries()) {
+        if (v.path === view.path) {
+          state.visitedViews.splice(i, 1)
+          break
+        }
+      }
     }
   },
   actions: {
     addTagView({ commit }, view) {
-      // console.log('---tags---', view)
       commit('addVisitedViews', view)
+    },
+    deleteTagView({ commit, state }, view) {
+      return new Promise((resolve) => {
+        commit('deleteVisitedViews', view)
+        resolve([...state.visitedViews])
+      })
     }
   }
 }

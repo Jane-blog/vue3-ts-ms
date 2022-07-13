@@ -24,27 +24,46 @@
 <script setup lang="ts">
 import { computed, watch, onMounted } from 'vue'
 // import path from 'path'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useStore } from '@/store'
 import type { RouteItem } from '@/router/types'
 import { Close } from '@element-plus/icons-vue'
 const $route = useRoute()
-// const $router = useRouter()
+const $router = useRouter()
 const store = useStore()
 const visitedViews = computed(() => {
   return store.state.tags.visitedViews
 })
-
+// 是否活跃状态
 const isActive = (route: RouteItem) => {
   return route.path === $route.path
 }
 
+// 是否固定标签
 const isAffix = (tag: RouteItem) => {
   return tag.meta && tag.meta.affix
 }
 
+// 更新标签
+const updataView = (visitedViews, view) => {
+  const latestView = visitedViews.slice(-1)[0]
+  if (latestView) {
+    $router.push(latestView)
+  } else {
+    if (view.name === 'Dashboard') {
+      $router.replace({ path: '/redirect' + view.fullPath })
+    } else {
+      $router.push('/')
+    }
+  }
+}
+
 const closeSelectedTag = (view: RouteItem | any) => {
-  console.log('closeSelectedTag', view)
+  store.dispatch('tags/deleteTagView', view).then((visitedViews) => {
+    if (isActive(view)) {
+      updataView(visitedViews, view)
+    }
+  })
 }
 
 const openMenu = (tag: RouteItem, e: any) => {

@@ -120,13 +120,10 @@ module.exports = {
     'no-multiple-empty-lines': ['error'], // 禁止出现多行空行
     'no-new-object': ['error'], // 禁用 Object 的构造函数
     'no-tabs': ['error'], // 禁用 tab
-    'no-trailing-spaces': [
-      'error',
-      { skipBlankLines: false, ignoreComments: false }
-    ], // 禁用行尾空白
+    'no-trailing-spaces': ['error',{ skipBlankLines: false, ignoreComments: false }], // 禁用行尾空白
     'no-whitespace-before-property': ['error'], // 禁止属性前有空白
     'nonblock-statement-body-position': ['error', 'beside'], // 强制单个语句的位置
-    // 'object-curly-spacing': [2, 'always', { objectsInObjects: false }], // 不允许大括号内的空格
+    'object-curly-spacing': [2, 'always', { objectsInObjects: false }], // 不允许大括号内的空格
     'operator-linebreak': ['error', 'after'], // 强制操作符使用一致的换行符
     'padded-blocks': [2, 'never'], // 要求或禁止块内填充
     'quotes': [2, 'single', { avoidEscape: true, allowTemplateLiterals: true }], // 强制使用一致的反勾号、双引号或单引号

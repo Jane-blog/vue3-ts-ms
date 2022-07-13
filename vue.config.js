@@ -18,7 +18,6 @@ module.exports = {
       warnings: false,
       errors: true
     }
-    // before: require('./mock/index.ts')
   },
   configureWebpack: {
     name: pageTitle,
