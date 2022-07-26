@@ -21,7 +21,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { computed, watch, onMounted } from 'vue'
 // import path from 'path'
 import { useRoute, useRouter } from 'vue-router'

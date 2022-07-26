@@ -24,30 +24,17 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from 'vue'
+<script lang="ts" setup>
+import { ref } from 'vue'
 import SideMenu from './modules/sideMenu'
 import NavMenu from './modules/navMenu'
 import TagView from './modules/tagView'
-export default defineComponent({
-  components: {
-    SideMenu,
-    NavMenu,
-    TagView
-  },
-  setup() {
-    // 保存是否当前处于折叠状态
-    const isCollapse = ref(false)
-    // 展开处理
-    const handleCollapseAction = (e: boolean) => {
-      isCollapse.value = e
-    }
-    return {
-      isCollapse,
-      handleCollapseAction
-    }
-  }
-})
+// 保存是否当前处于折叠状态
+const isCollapse = ref(false)
+// 展开处理
+const handleCollapseAction = (e: boolean) => {
+  isCollapse.value = e
+}
 </script>
 
 <style lang="less" scoped>

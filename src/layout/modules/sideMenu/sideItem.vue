@@ -32,67 +32,58 @@
   </template>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from 'vue'
+<script lang="ts" setup>
+import { defineProps, ref } from 'vue'
 import path from 'path'
 import { isExternal } from '@/utils/validate'
 import type { RouteItem } from '@/router/types'
-export default defineComponent({
-  props: {
-    item: {
-      // 每一个router Item
-      type: Object,
-      required: true
-    },
-
-    isNest: {
-      // 用于判断是不是子Item,设置响应的样式
-      type: Boolean,
-      default: false
-    },
-    basePath: {
-      // 基础路径，用于拼接
-      type: String,
-      default: ''
-    }
+const props = defineProps({
+  item: {
+    // 每一个router Item
+    type: Object,
+    required: true
   },
-  setup(props) {
-    // 只有一个子节点路由
-    let onlyOneChild: any = ref([])
-    const onlyOneItem = (children = [], parent: RouteItem) => {
-      const showingChildren = children.filter((item: RouteItem) => {
-        if (item.hidden) {
-          return false
-        } else {
-          onlyOneChild.value = item
-          return true
-        }
-      })
-      if (showingChildren.length === 1 && parent.alwaysShow) {
-        return true
-      }
-      if (showingChildren.length === 0) {
-        onlyOneChild.value = { ...parent, path: '', noChildren: true }
-        return true
-      }
-      return false
-    }
-    const resolvePath = (routePath: string) => {
-      if (isExternal(routePath)) {
-        return routePath
-      }
-      if (isExternal(props.basePath)) {
-        return props.basePath
-      }
-      return path.resolve(props.basePath, routePath)
-    }
-    return {
-      onlyOneChild,
-      onlyOneItem,
-      resolvePath
-    }
+
+  isNest: {
+    // 用于判断是不是子Item,设置响应的样式
+    type: Boolean,
+    default: false
+  },
+  basePath: {
+    // 基础路径，用于拼接
+    type: String,
+    default: ''
   }
 })
+// 只有一个子节点路由
+let onlyOneChild: any = ref([])
+const onlyOneItem = (children = [], parent: RouteItem) => {
+  const showingChildren = children.filter((item: RouteItem) => {
+    if (item.hidden) {
+      return false
+    } else {
+      onlyOneChild.value = item
+      return true
+    }
+  })
+  if (showingChildren.length === 1 && parent.alwaysShow) {
+    return true
+  }
+  if (showingChildren.length === 0) {
+    onlyOneChild.value = { ...parent, path: '', noChildren: true }
+    return true
+  }
+  return false
+}
+const resolvePath = (routePath: string) => {
+  if (isExternal(routePath)) {
+    return routePath
+  }
+  if (isExternal(props.basePath)) {
+    return props.basePath
+  }
+  return path.resolve(props.basePath, routePath)
+}
 </script>
 
 <style lang="less" scoped>
